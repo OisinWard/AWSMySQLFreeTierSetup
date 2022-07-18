@@ -1,0 +1,3 @@
+---
+- include: VPCSetUp.yml
+- include: MySQLInstanceSetUp.yml

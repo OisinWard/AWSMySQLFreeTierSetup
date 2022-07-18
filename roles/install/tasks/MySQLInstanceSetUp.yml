@@ -1,0 +1,43 @@
+---
+  - name: Display the privateRDSSubnet1 output
+    debug:
+      var: privateRDSSubnet1
+
+  - name: Display the privateRDSSubnet2 output
+    debug:
+      var: privateRDSSubnet2
+
+  - name: Create DB subnet
+    rds_subnet_group:
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      region: "{{aws_region}}"
+      state: present
+      name: mysql-rds
+      description: Database subnet for mysql lab project
+      subnets:
+        - "{{ privateRDSSubnet1.subnet.id }}"
+        - "{{ privateRDSSubnet2.subnet.id }}"
+    register: dbsubnet
+
+  - name: Display the dbsubnet output
+    debug:
+      var: dbsubnet
+
+  - name: create minimal mysql instance
+    rds_instance:
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      region: "{{aws_region}}"
+      engine: mysql
+      db_instance_identifier: mysql-free-lab-db-instance
+      instance_type: db.t3.micro
+      master_username: "{{ username }}"
+      master_user_password: "{{ password }}"
+      allocated_storage: "{{ allocated_storage }}"
+      db_subnet_group_name: "{{ dbsubnet.subnet_group.db_subnet_group_name }}" 
+    register: mysqldbcreation
+
+  - name: Display the mysqldbcreation output
+    debug:
+      var: mysqldbcreation
