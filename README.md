@@ -2,7 +2,7 @@
 
 This playbook sets up a MySQL free tier instance.
 
-This is just a labbing playbook to practice ansible with AWS.
+This is just a labbing playbook to practice ansible with AWS. Terraform is a better tool for provisioning cloud resources than ansible.
 
 The database isn't exposed to the internet. 
 
